@@ -6,10 +6,21 @@ const Todolist = () => {
 
   const addToList = () => {
     const todoItem = inputRef.current.value;
-    console.log(todoItem);
+    // console.log(todoItem);
     setItems([...items, todoItem]); // 非同步
     inputRef.current.value = "";
   };
+
+  const removeItem = (indexToRemove) => {
+    // console.log(indexToRemove);
+    setItems(prevItems => {
+      return prevItems.filter((item, index) => index !== indexToRemove);
+    })
+  }
+
+  const clearAll = () => {
+    setItems([]);
+  }
 
   useEffect(() => {
     console.log(items);
@@ -22,17 +33,20 @@ const Todolist = () => {
         <input ref={inputRef} className="p-2 h-8 border-[1px] rounded" type="text" placeholder="type some todo item..."/>
         <button className="w-8 h-8 bg-white border-[1px] rounded" type="button" onClick={addToList}>+</button>
       </div>
-      <div className="mt-4 border-[1px] w-64 h-72 bg-white">
+      <div className="mt-4 p-4 border-[1px] w-64 bg-white">
         {
           items.map((item, index) => {
             return (
-              <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2" key={index}>
+              <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2 justify-between" key={index}>
                 {item}
+                <button className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" type="button" onClick={() => removeItem(index)}>x</button>
+                {/* onClick={removeItem(index)} 會直接觸發，要傳參數最好都用arrow function*/}
               </div>
             )
           })
         }
       </div>
+      <button className="w-full h-8 flex items-center justify-center rounded bg-white mt-2" type="button" onClick={clearAll}>CLEAR ALL TODO</button>
     </div>
   )
 };
