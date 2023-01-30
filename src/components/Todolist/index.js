@@ -11,6 +11,13 @@ const Todolist = () => {
     inputRef.current.value = "";
   };
 
+  const removeItem = (indexToRemove) => {
+    // console.log(indexToRemove);
+    setItems(prevItems => {
+      return prevItems.filter((item, index) => index !== indexToRemove);
+    })
+  }
+
   const clearAll = () => {
     setItems([]);
   }
@@ -32,6 +39,8 @@ const Todolist = () => {
             return (
               <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2 justify-between" key={index}>
                 {item}
+                <button className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" type="button" onClick={() => removeItem(index)}>x</button>
+                {/* onClick={removeItem(index)} 會直接觸發，要傳參數最好都用arrow function*/}
               </div>
             )
           })
