@@ -1,52 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 
 const Todolist = () => {
-  const inputRef = useRef(null);
-  const [items, setItems] = useState([]);
+  const inputRef = useRef();
+  const [todos, setTodos] = useState([]);
 
-  const addToList = () => {
-    const todoItem = inputRef.current.value;
-    // console.log(todoItem);
-    setItems([...items, todoItem]); // 非同步
+  const addTodo = (e) => {
+    e.preventDefault();
+    setTodos([...todos, {
+      text: inputRef.current.value,
+      completed: false,
+      editing: false
+    }]);
     inputRef.current.value = "";
   };
 
-  const removeItem = (indexToRemove) => {
-    // console.log(indexToRemove);
-    setItems(prevItems => {
-      return prevItems.filter((item, index) => index !== indexToRemove);
+  const removeTodo = (indexToRemove) => {
+    setTodos(prevTodos => {
+      return prevTodos.filter((_, index) => index !== indexToRemove);
+      // 因為這個函數主要是檢查數組項目的索引，並不需要使用項目的實際值，因此使用空白識別符 _ 可以清晰地表明代碼的意圖
+      // prevTodos 代表在當前狀態下(函數執行之前)的待辦事項列表
     })
   }
 
-  const clearAll = () => {
-    setItems([]);
+  const clearAllTodo = () => {
+    setTodos([]);
   }
 
   useEffect(() => {
-    console.log(items);
-  }, [items]);
+    console.log(todos);
+  }, [todos]);
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-5xl">TODO LIST</h1>
-      <div className="mt-4 flex items-center">
-        <input ref={inputRef} className="p-2 h-8 border-[1px] rounded" type="text" placeholder="type some todo item..."/>
-        <button className="w-8 h-8 bg-white border-[1px] rounded" type="button" onClick={addToList}>+</button>
-      </div>
+      <form className="mt-4 flex items-center" onSubmit={addTodo}>
+        <input type="text" ref={inputRef} className="p-2 h-8 border-[1px] rounded" placeholder="type some todo item..."/>
+        <button type="submit" className="w-8 h-8 bg-white border-[1px] rounded">+</button>
+      </form>
       <div className="mt-4 p-4 border-[1px] w-64 bg-white">
         {
-          items.map((item, index) => {
+          todos.map((todo, index) => {
             return (
               <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2 justify-between" key={index}>
-                {item}
-                <button className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" type="button" onClick={() => removeItem(index)}>x</button>
-                {/* onClick={removeItem(index)} 會直接觸發，要傳參數最好都用arrow function*/}
+                <input type="checkbox" className="checkBox" />
+                {todo.text}
+                <button type="button" className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" onClick={() => removeTodo(index)}>x</button>
               </div>
             )
           })
         }
       </div>
-      <button className="w-full h-8 flex items-center justify-center rounded bg-white mt-2" type="button" onClick={clearAll}>CLEAR ALL TODO</button>
+      <button type="button" className="w-full h-8 flex items-center justify-center rounded bg-white mt-2" onClick={clearAllTodo}>CLEAR ALL TODO</button>
     </div>
   )
 };
