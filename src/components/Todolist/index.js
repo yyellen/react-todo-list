@@ -6,20 +6,30 @@ const Todolist = () => {
 
   const addTodo = (e) => {
     e.preventDefault();
-    setTodos([...todos, {
-      text: inputRef.current.value,
-      completed: false,
-      editing: false
-    }]);
+    setTodos([...todos, { text: inputRef.current.value, completed: false, editing: false }]);
     inputRef.current.value = "";
   };
 
   const removeTodo = (indexToRemove) => {
     setTodos(prevTodos => {
       return prevTodos.filter((_, index) => index !== indexToRemove);
-      // 因為這個函數主要是檢查數組項目的索引，並不需要使用項目的實際值，因此使用空白識別符 _ 可以清晰地表明代碼的意圖
-      // prevTodos 代表在當前狀態下(函數執行之前)的待辦事項列表
     })
+  }
+  // 因為這個函數主要是檢查數組項目的索引，並不需要使用項目的實際值，因此使用空白識別符 _ 可以清晰地表明代碼的意圖
+  // prevTodos 代表在當前狀態下(函數執行之前)的待辦事項列表
+
+  const toggleTodo = (indexToCompleted) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo, i) => {
+        if (i === indexToCompleted) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          };
+        }
+        return todo;
+      })
+    )
   }
 
   const clearAllTodo = () => {
@@ -42,8 +52,10 @@ const Todolist = () => {
           todos.map((todo, index) => {
             return (
               <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2 justify-between" key={index}>
-                <input type="checkbox" className="checkBox" />
-                {todo.text}
+                <input type="checkbox" className="checkBox" onClick={() => toggleTodo(index)}/>
+                <div style={{ textDecoration: todo.completed ? "line-through" : "" }}>
+                  {todo.text}
+                </div>
                 <button type="button" className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" onClick={() => removeTodo(index)}>x</button>
               </div>
             )
