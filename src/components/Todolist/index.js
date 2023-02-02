@@ -32,6 +32,35 @@ const Todolist = () => {
     )
   }
 
+  const toggleEditing = (indexToEdit) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo, i) => {
+        if (i === indexToEdit) {
+          return {
+            ...todo,
+            editing: !todo.editing
+          };
+        }
+        return todo;
+      })
+    )
+  }
+
+  const editTodo = (textEdit, indexToEdit) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo, i) => {
+        if (i === indexToEdit) {
+          return {
+            ...todo,
+            text: textEdit,
+            editing: false
+          };
+        }
+        return todo;
+      })
+    )
+  }
+
   const clearAllTodo = () => {
     setTodos([]);
   }
@@ -52,11 +81,24 @@ const Todolist = () => {
           todos.map((todo, index) => {
             return (
               <div className="w-full h-8 flex items-center rounded bg-[#f0f0f0] mt-2 first:mt-0 p-2 justify-between" key={index}>
-                <input type="checkbox" className="checkBox" onClick={() => toggleTodo(index)}/>
-                <div style={{ textDecoration: todo.completed ? "line-through" : "" }}>
-                  {todo.text}
+                <div className="flex">
+                  <input type="checkbox" className="checkBox mr-1" onClick={() => toggleTodo(index)}/>
+                  <div style={{ textDecoration: todo.completed ? "line-through" : "" }}>
+                  {todo.editing ? (
+                  <input type="text" className="w-[80%] ml-1 pl-1" defaultValue={todo.text} onBlur={(e) => editTodo(e.target.value, index)} autoFocus/>
+                  ) : (
+                    todo.text
+                  )}
+                  </div>
                 </div>
-                <button type="button" className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" onClick={() => removeTodo(index)}>x</button>
+                {todo.editing ? (
+                <button className="w-10 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-lg" onClick={() => toggleEditing(index)}>save</button>
+                ) : (
+                  <div className="flex justify-between">
+                    <button type="button" className="w-10 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-lg" onClick={() => toggleEditing(index)}>edit</button>
+                    <button type="button" className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" onClick={() => removeTodo(index)}>x</button>
+                  </div>
+                )}
               </div>
             )
           })
