@@ -11,6 +11,18 @@ const Todolist = () => {
   };
 
   const removeTodo = (indexToRemove) => {
+    // 1. splice 笨方法
+    // const newTodos = [...todos];
+    // newTodos.splice(indexToRemove, 1);
+    // setTodos(newTodos);
+
+    // 2. filter 丹尼寫法
+    // setTodos(
+    //   todos.filter((todo, i) => {
+    //     return indexToRemove !== i;
+    // }))
+    
+    // 2. filter
     setTodos(prevTodos => {
       return prevTodos.filter((_, index) => index !== indexToRemove);
     })
