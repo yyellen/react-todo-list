@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import TodoForm from "../TodoForm";
+import TodoItem from "../TodoItem";
+import Button from "../Button";
 
-const Todolist = () => {
+const TodoList = () => {
   const inputRef = useRef();
   const [todos, setTodos] = useState([]);
 
-  const addTodo = (e) => {
-    e.preventDefault();
+  const addTodo = () => {
     setTodos([...todos, { text: inputRef.current.value, completed: false, editing: false }]);
     inputRef.current.value = "";
   };
@@ -82,43 +84,31 @@ const Todolist = () => {
   }, [todos]);
 
   return (
-    <div className="flex flex-col items-center w-[50%] mt-40">
-      <h1 className="text-5xl font-bold text-white">TODO LIST</h1>
-      <form className="w-[80%] mt-4 flex justify-center" onSubmit={addTodo}>
-        <input type="text" ref={inputRef} className="w-64 p-2 h-8 border-[1px] rounded" placeholder="type some todo item..."/>
-        <button type="submit" className="w-8 h-8 ml-1 bg-white border-[1px] rounded">+</button>
-      </form>
-      <div className="mt-4 p-4 border-2 rounded w-64">
+    <div className="flex flex-col items-center w-[80%] mt-32">
+      <h1 className="text-5xl font-bold text-black">TODO LIST</h1>
+      <TodoForm
+        inputRef={inputRef}
+        addTodo={addTodo}/>
+      <div className="w-72 mt-4 p-4 border-2 rounded">
         {
           todos.map((todo, index) => {
             return (
-              <div className="w-full h-8 flex items-center border-[1px] rounded mt-2 first:mt-0 p-2 justify-between" key={index}>
-                <div className="flex">
-                  <input type="checkbox" className="checkBox mr-1" onClick={() => toggleTodo(index)}/>
-                  <div style={{ textDecoration: todo.completed ? "line-through" : "" }}>
-                  {todo.editing ? (
-                  <input type="text" className="w-[80%] ml-1 pl-1" defaultValue={todo.text} onBlur={(e) => editTodo(e.target.value, index)} autoFocus/>
-                  ) : (
-                    todo.text
-                  )}
-                  </div>
-                </div>
-                {todo.editing ? (
-                <button className="w-10 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-lg" onClick={() => toggleEditing(index)}>save</button>
-                ) : (
-                  <div className="flex justify-between">
-                    <button type="button" className="w-10 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-lg" onClick={() => toggleEditing(index)}>edit</button>
-                    <button type="button" className="w-6 h-6 p-0 flex justify-center items-center bg-white border-[1px] rounded-full" onClick={() => removeTodo(index)}>x</button>
-                  </div>
-                )}
-              </div>
+              <TodoItem
+                key={index}
+                index={index}
+                todo={todo}
+                toggleTodo={() => toggleTodo(index)}
+                removeTodo={() => removeTodo(index)}
+                toggleEditing={() => toggleEditing(index)}
+                editTodo={editTodo}
+              />
             )
           })
         }
       </div>
-      <button type="button" className="button w-64 h-8 flex items-center justify-center rounded bg-white mt-2" onClick={clearAllTodo}>CLEAR ALL TODO</button>
+      <Button text="CLEAR ALL" onClick={clearAllTodo} className="w-72 h-8 flex items-center justify-center border-[2px] rounded bg-white mt-2"/>
     </div>
   )
 };
 
-export default Todolist;
+export default TodoList;
