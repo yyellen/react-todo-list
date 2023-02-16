@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../button";
 
 const TodoItem = ({todo, index, toggleTodo, removeTodo, toggleEditing, editTodo}) => {
   return (
