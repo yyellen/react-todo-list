@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import TodoForm from "../TodoForm";
-import TodoItem from "../TodoItem";
-import Button from "../Button";
+import TodoForm from "../todo-form";
+import TodoItem from "../todo-item";
+import Button from "../button-a";
 
 const TodoList = () => {
   const inputRef = useRef();
