@@ -1,9 +1,11 @@
-# Simple React TODO List
+# React Todo List App
+Create a todo list using react.js
 
 [Demo Page](https://react-todo-list-yyellen.vercel.app/)
 
-![image](https://user-images.githubusercontent.com/98078487/216273850-87bb9234-68d2-444c-b9fd-e277379c0d8f.png)
+![image](https://user-images.githubusercontent.com/98078487/219292363-842348b9-ea35-4978-aea5-9d876ed10193.png)
+
 
 ## Skills
-React Hooks: useState, useEffect, useRef
+React Hooks: useState, useEffect, useRef  
 Tailwind CSS
