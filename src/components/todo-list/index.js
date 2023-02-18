@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import TodoForm from "../todo-form";
 import TodoItem from "../todo-item";
 import Button from "../button";
@@ -8,7 +9,8 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
   const addTodo = () => {
-    setTodos([...todos, { text: inputRef.current.value, completed: false, editing: false }]);
+    const newTodo = { id: uuidv4(), text: inputRef.current.value, completed: false, editing: false };
+    setTodos([newTodo, ...todos]);
     inputRef.current.value = "";
   };
 
@@ -94,7 +96,7 @@ const TodoList = () => {
           todos.map((todo, index) => {
             return (
               <TodoItem
-                key={index}
+                key={todo.id}
                 index={index}
                 todo={todo}
                 toggleTodo={() => toggleTodo(index)}
