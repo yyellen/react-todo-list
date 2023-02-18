@@ -8,7 +8,8 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
   const addTodo = () => {
-    setTodos([...todos, { text: inputRef.current.value, completed: false, editing: false }]);
+    const newTodo = { text: inputRef.current.value, completed: false, editing: false };
+    setTodos([newTodo, ...todos]);
     inputRef.current.value = "";
   };
 
