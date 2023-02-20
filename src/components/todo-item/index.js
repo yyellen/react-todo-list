@@ -2,14 +2,14 @@ import Button from "../button";
 
 const TodoItem = ({todo, index, toggleTodo, removeTodo, toggleEditing, editTodo}) => {
   return (
-    <div className="w-full h-8 flex items-center border-[1px] rounded mt-2 first:mt-0 p-2 justify-between" key={index}>
+    <div className="w-full h-8 flex items-center border-[1px] rounded mt-2 first:mt-0 p-2 justify-between" key={todo.id}>
       <div className="flex">
         <input type="checkbox" className="mr-1" onClick={() => toggleTodo(index)}/>
         <div style={{ textDecoration: todo.completed ? "line-through" : "" }}>
           {todo.editing ? (
             <input type="text" className="w-[80%] ml-1 pl-1" defaultValue={todo.text} onBlur={(e) => editTodo(e.target.value, index)}/>
             ) : (
-            todo.text
+              <p>{todo.text}</p>
           )}
         </div>
       </div>
