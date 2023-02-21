@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import TodoForm from "../todo-form";
 import TodoItem from "../todo-item";
 import Button from "../button";
@@ -9,7 +9,12 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
   const addTodo = () => {
-    const newTodo = { id: uuidv4(), text: inputRef.current.value, completed: false, editing: false };
+    const newTodo = {
+      id: uuidv4(),
+      text: inputRef.current.value,
+      completed: false,
+      editing: false,
+    };
     setTodos([newTodo, ...todos]);
     inputRef.current.value = "";
   };
@@ -25,12 +30,12 @@ const TodoList = () => {
     //   todos.filter((todo, i) => {
     //     return indexToRemove !== i;
     // }))
-    
+
     // 2. filter
-    setTodos(prevTodos => {
+    setTodos((prevTodos) => {
       return prevTodos.filter((_, index) => index !== indexToRemove);
-    })
-  }
+    });
+  };
   // 因為這個函數主要是檢查數組項目的索引，並不需要使用項目的實際值，因此使用空白識別符 _ 可以清晰地表明代碼的意圖
   // prevTodos 代表在當前狀態下(函數執行之前)的待辦事項列表
 
@@ -40,13 +45,13 @@ const TodoList = () => {
         if (i === indexToCompleted) {
           return {
             ...todo,
-            completed: !todo.completed
+            completed: !todo.completed,
           };
         }
         return todo;
       })
-    )
-  }
+    );
+  };
 
   const toggleEditing = (indexToEdit) => {
     setTodos((prevTodos) =>
@@ -54,13 +59,13 @@ const TodoList = () => {
         if (i === indexToEdit) {
           return {
             ...todo,
-            editing: !todo.editing
+            editing: !todo.editing,
           };
         }
         return todo;
       })
-    )
-  }
+    );
+  };
 
   const editTodo = (textEdit, indexToEdit) => {
     setTodos((prevTodos) =>
@@ -69,17 +74,17 @@ const TodoList = () => {
           return {
             ...todo,
             text: textEdit,
-            editing: false
+            editing: false,
           };
         }
         return todo;
       })
-    )
-  }
+    );
+  };
 
   const clearAllTodo = () => {
     setTodos([]);
-  }
+  };
 
   useEffect(() => {
     console.log(todos);
@@ -88,29 +93,29 @@ const TodoList = () => {
   return (
     <div className="flex flex-col items-center w-[80%] mt-32">
       <h1 className="text-5xl font-bold text-black">TODO LIST</h1>
-      <TodoForm
-        inputRef={inputRef}
-        addTodo={addTodo}/>
+      <TodoForm inputRef={inputRef} addTodo={addTodo} />
       <div className="w-72 mt-4 p-4 border-2 rounded">
-        {
-          todos.map((todo, index) => {
-            return (
-              <TodoItem
-                key={todo.id}
-                index={index}
-                todo={todo}
-                toggleTodo={() => toggleTodo(index)}
-                removeTodo={() => removeTodo(index)}
-                toggleEditing={() => toggleEditing(index)}
-                editTodo={editTodo}
-              />
-            )
-          })
-        }
+        {todos.map((todo, index) => {
+          return (
+            <TodoItem
+              key={todo.id}
+              index={index}
+              todo={todo}
+              toggleTodo={() => toggleTodo(index)}
+              removeTodo={() => removeTodo(index)}
+              toggleEditing={() => toggleEditing(index)}
+              editTodo={editTodo}
+            />
+          );
+        })}
       </div>
-      <Button text="CLEAR ALL" onClick={clearAllTodo} className="w-72 h-8 flex items-center justify-center border-[2px] rounded bg-white mt-2"/>
+      <Button
+        text="CLEAR ALL"
+        onClick={clearAllTodo}
+        className="w-72 h-8 flex items-center justify-center border-[2px] rounded bg-white mt-2"
+      />
     </div>
-  )
+  );
 };
 
 export default TodoList;
